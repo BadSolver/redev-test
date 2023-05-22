@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/redev-test/static/css/main.49b79246.css",
+    "main.js": "/redev-test/static/js/main.738476e8.js",
+    "index.html": "/redev-test/index.html",
+    "main.49b79246.css.map": "/redev-test/static/css/main.49b79246.css.map",
+    "main.738476e8.js.map": "/redev-test/static/js/main.738476e8.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.49b79246.css",
+    "static/js/main.738476e8.js"
+  ]
+}
