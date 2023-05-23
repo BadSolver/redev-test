@@ -1,46 +1,41 @@
 import React, { useContext } from "react";
 import "./login.css";
 import { MyContext } from "ContextData";
-import { Button, Form } from "components";
-import { Link } from "react-router-dom";
+import { Button, CustomInput } from "components";
+import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
+  const navigate = useNavigate();
+
   const { showData, onChangeLogin, onChangePassword, data, login, password } =
     useContext(MyContext);
-  const options = {
-    textDecoration: "none",
-    color: "Black",
-  };
 
   const { userLogin, userPassword } = data;
   return (
-    <form className="wrapper">
+    <form className="wrapper" onSubmit={showData}>
       <h3>Введите данные для входа</h3>
-      <Form
+      <CustomInput
         placeholder="Введите ваш логин"
-        onChange={onChangeLogin}
-        name="login"
         value={login}
         type="text"
+        onChange={onChangeLogin}
       />
-      <Form
+
+      <CustomInput
         placeholder="Введите ваш пароль"
-        onChange={onChangePassword}
-        name="email"
         value={password}
         type="password"
+        onChange={onChangePassword}
       />
+
       <div className="button-block">
-        <Button onClick={showData} text="Войти" />
+        <Button onClick={() => {}} text="Войти" type="submit" />
         <Button
-          onClick={(e) => {
-            e.preventDefault();
+          onClick={() => {
+            navigate("/register");
           }}
-          text={
-            <Link to="/register" style={options}>
-              Зарегистрироваться
-            </Link>
-          }
+          text="Зарегистрироваться"
+          type="button"
         />
       </div>
 
