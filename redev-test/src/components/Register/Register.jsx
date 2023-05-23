@@ -1,6 +1,5 @@
 import { MyContext } from "ContextData";
-import { Button } from "components";
-import { Form } from "components/Form";
+import { Button, CustomInput } from "components";
 import React, { useContext } from "react";
 import "./style.css";
 
@@ -31,48 +30,50 @@ export const Register = () => {
   } = registerData;
 
   return (
-    <form className="wrapper">
+    <form className="wrapper" onSubmit={showRegistrationData}>
       <h3>Регистрация пользователя</h3>
-      <Form
+      <CustomInput
         placeholder="Введите ваше имя"
-        name="name"
         value={name}
         onChange={onChangeName}
         type="text"
       />
-      <Form
+      <CustomInput
         placeholder="Введите вашу фамилию"
-        name="name"
         value={subName}
         onChange={onChangeSubName}
         type="text"
       />
-      <Form
+      <CustomInput
         placeholder="Введите вашу почту"
-        name="name"
         value={email}
         onChange={onChangeEmail}
         type="email"
       />
-      <Form
+      <CustomInput
         placeholder="Введите ваш пароль"
-        name="name"
         value={newPassword}
         onChange={onChangeNewPassword}
         type="password"
       />
       <label>
         <select value={gender} onChange={onChangeGender}>
+          <option value="nothin">Не выбрано</option>
           <option value="man">Мужской</option>
           <option value="wooman">Женский</option>
         </select>
       </label>
       <label>
         С правилами ознакомлен
-        <input type="checkbox" checked={checked} onChange={onChangeChecked} className="input-checkbox"/>
+        <input
+          type="checkbox"
+          checked={checked}
+          onChange={onChangeChecked}
+          className="input-checkbox"
+        />
       </label>
 
-      <Button text="Регистрация" onClick={showRegistrationData} />
+      <Button text="Регистрация" onClick={() => {}} type="submit" />
       {registerName && registerSubName && registerEmail && registerPassword ? (
         <div>
           <h3>Проверьте введенные вами данные</h3>

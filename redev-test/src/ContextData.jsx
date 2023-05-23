@@ -39,7 +39,7 @@ export const MyContextProvider = ({ children }) => {
     registerPassword: newPassword,
     registerGender: gender,
   });
-  const [checked, setChecked] = useState(true);
+  const [checked, setChecked] = useState(false);
 
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
@@ -57,46 +57,88 @@ export const MyContextProvider = ({ children }) => {
   };
 
   const onChangeName = (e) => {
-    setName(e.target.value);
+    const str = e.target.value.toLowerCase().trim();
+    const validStr = str.slice(0, 1).toUpperCase() + str.slice(1);
+    setName(validStr);
   };
+
   const onChangeSubName = (e) => {
-    setSubName(e.target.value);
+    const str = e.target.value.toLowerCase().trim();
+    const validStr = str.slice(0, 1).toUpperCase() + str.slice(1);
+    setSubName(validStr);
   };
+
   const onChangeEmail = (e) => {
-    setEmail(e.target.value);
+    const str = e.target.value.toLowerCase().trim();
+    const validStr = str.slice(0, 1).toUpperCase() + str.slice(1);
+    setEmail(validStr);
   };
+
   const onChangeNewPassword = (e) => {
-    setNewPassword(e.target.value);
+    setNewPassword(e.target.value.trim());
   };
+
   const onChangeLogin = (e) => {
-    setLogin(e.target.value);
+    const str = e.target.value.toLowerCase().trim();
+    const validStr = str.slice(0, 1).toUpperCase() + str.slice(1);
+    setLogin(validStr);
   };
+
   const onChangePassword = (e) => {
-    setPassword(e.target.value);
+    setPassword(e.target.value.trim());
   };
+
   const showData = (e) => {
     e.preventDefault();
-    setData({
-      userLogin: login,
-      userPassword: password,
-    });
-    setLogin("");
-    setPassword("");
+    if (login.length < 2 || login.length >= 20) {
+      alert("Ваш логин должен содержать от 2 до 20 символов");
+      return;
+    } else if (password.length < 6 || password.length >= 20) {
+      alert("Пароль должен содержать от 6 до 20 символов");
+      return;
+    } else {
+      setData({
+        userLogin: login,
+        userPassword: password,
+      });
+      setLogin("");
+      setPassword("");
+    }
   };
 
   const showRegistrationData = (e) => {
     e.preventDefault();
-    setRegisterData({
-      registerName: name,
-      registerSubName: subName,
-      registerEmail: email,
-      registerPassword: newPassword,
-      registerGender: gender,
-    });
-    setName("");
-    setSubName("");
-    setEmail("");
-    setNewPassword("");
+    if (name.length < 2 || name.length >= 20) {
+      alert("Имя должно содержать от 2 до 20 символов");
+      return;
+    } else if (subName.length < 2 || subName.length >= 20) {
+      alert("Фамилия должна содержать от 2 до 20 символов");
+      return;
+    } else if (email.length < 3 || newPassword.length >= 30) {
+      alert("Почта должна содержать от 3 до 30 символов");
+      return;
+    } else if (newPassword.length < 6 || newPassword.length >= 20) {
+      alert("Пароль должен содержать от 6 до 20 символов");
+      return;
+    } else if (gender.length === 0) {
+      alert("Пожалуйста выберите ваш пол");
+      return;
+    } else if (checked === false) {
+      alert("Ознакомьтесь пожалуйста с правилами портала");
+      return;
+    } else {
+      setRegisterData({
+        registerName: name,
+        registerSubName: subName,
+        registerEmail: email,
+        registerPassword: newPassword,
+        registerGender: gender,
+      });
+      setName("");
+      setSubName("");
+      setEmail("");
+      setNewPassword("");
+    }
   };
 
   const contextValue = {
