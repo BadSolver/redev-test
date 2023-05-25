@@ -1,148 +1,163 @@
-// import { Button, CustomInput } from "components";
-// import React, { useState } from "react";
-// import "./style.css";
+import React, { useState } from "react";
+import "./style.css";
+import { useForm } from "react-hook-form";
 
-// export const Register = () => {
-//   const [name, setName] = useState("");
-//   const [subName, setSubName] = useState("");
-//   const [email, setEmail] = useState("");
-//   const [newPassword, setNewPassword] = useState("");
-//   const [gender, setGender] = useState("");
-//   const [registerData, setRegisterData] = useState({
-//     registerName: name,
-//     registerSubName: subName,
-//     registerEmail: email,
-//     registerPassword: newPassword,
-//     registerGender: gender,
-//   });
-//   const [checked, setChecked] = useState(false);
-//   const onChangeChecked = () => {
-//     setChecked(!checked);
-//   };
-//   const onChangeGender = (e) => {
-//     setGender(e.target.value);
-//   };
-//   const onChangeName = (e) => {
-//     const str = e.target.value.toLowerCase().trim();
-//     const validStr = str.slice(0, 1).toUpperCase() + str.slice(1);
-//     setName(validStr);
-//   };
-//   const onChangeSubName = (e) => {
-//     const str = e.target.value.toLowerCase().trim();
-//     const validStr = str.slice(0, 1).toUpperCase() + str.slice(1);
-//     setSubName(validStr);
-//   };
-//   const onChangeEmail = (e) => {
-//     const str = e.target.value.toLowerCase().trim();
-//     const validStr = str.slice(0, 1).toUpperCase() + str.slice(1);
-//     setEmail(validStr);
-//   };
+export const Register = () => {
+  //   const [name, setName] = useState("");
+  //   const [subName, setSubName] = useState("");
+  //   const [email, setEmail] = useState("");
+  //   const [newPassword, setNewPassword] = useState("");
+  const [registerData, setRegisterData] = useState({
+    name: "",
+    subName: "",
+    email: "",
+    password: "",
+    regGender: "",
+  });
 
-//   const onChangeNewPassword = (e) => {
-//     setNewPassword(e.target.value.trim());
-//   };
-//   const showRegistrationData = (e) => {
-//     e.preventDefault();
-//     if (name.length < 2 || name.length >= 20) {
-//       alert("Имя должно содержать от 2 до 20 символов");
-//       return;
-//     } else if (subName.length < 2 || subName.length >= 20) {
-//       alert("Фамилия должна содержать от 2 до 20 символов");
-//       return;
-//     } else if (email.length < 3 || newPassword.length >= 30) {
-//       alert("Почта должна содержать от 3 до 30 символов");
-//       return;
-//     } else if (newPassword.length < 6 || newPassword.length >= 20) {
-//       alert("Пароль должен содержать от 6 до 20 символов");
-//       return;
-//     } else if (gender.length === 0) {
-//       alert("Пожалуйста выберите ваш пол");
-//       return;
-//     } else if (checked === false) {
-//       alert("Ознакомьтесь пожалуйста с правилами портала");
-//       return;
-//     } else {
-//       setRegisterData({
-//         registerName: name,
-//         registerSubName: subName,
-//         registerEmail: email,
-//         registerPassword: newPassword,
-//         registerGender: gender,
-//       });
-//       setName("");
-//       setSubName("");
-//       setEmail("");
-//       setNewPassword("");
-//     }
-//   };
+  const { name, subName, email, password, regGender } = registerData;
+  console.log(registerData);
+  console.log(regGender);
+  const {
+    register,
+    formState: { errors, isValid },
+    handleSubmit,
+    reset,
+  } = useForm();
 
-//   const {
-//     registerName,
-//     registerSubName,
-//     registerEmail,
-//     registerPassword,
-//     registerGender,
-//   } = registerData;
+  const onSubmit = (data) => {
+    alert(JSON.stringify(data));
+    setRegisterData({
+      name: data.name,
+      subName: data.subName,
+      email: data.email,
+      password: data.password,
+      regGender: data.regGender,
+    });
 
-//   return (
-//     <form className="wrapper" onSubmit={showRegistrationData}>
-//       <h3>Регистрация пользователя</h3>
-//       <CustomInput
-//         placeholder="Введите ваше имя"
-//         value={name}
-//         onChange={onChangeName}
-//         type="text"
-//       />
-//       <CustomInput
-//         placeholder="Введите вашу фамилию"
-//         value={subName}
-//         onChange={onChangeSubName}
-//         type="text"
-//       />
-//       <CustomInput
-//         placeholder="Введите вашу почту"
-//         value={email}
-//         onChange={onChangeEmail}
-//         type="email"
-//       />
-//       <CustomInput
-//         placeholder="Введите ваш пароль"
-//         value={newPassword}
-//         onChange={onChangeNewPassword}
-//         type="password"
-//       />
-//       <label>
-//         <select value={gender} onChange={onChangeGender}>
-//           <option value="nothin">Не выбрано</option>
-//           <option value="man">Мужской</option>
-//           <option value="wooman">Женский</option>
-//         </select>
-//       </label>
-//       <label>
-//         С правилами ознакомлен
-//         <input
-//           type="checkbox"
-//           checked={checked}
-//           onChange={onChangeChecked}
-//           className="input-checkbox"
-//         />
-//       </label>
+    reset();
+  };
+  console.log(errors.name);
+  const [checked, isChecked] = useState(false);
 
-//       <Button text="Регистрация" onClick={() => {}} type="submit" />
-//       {registerName && registerSubName && registerEmail && registerPassword ? (
-//         <div>
-//           <h3>Проверьте введенные вами данные</h3>
-//           <ul>
-//             <li>Ваше имя: {registerName}</li>
-//             <li>Ваша фамилия: {registerSubName}</li>
-//             <li>Ваша почта: {registerEmail}</li>
-//             <li>Ваш пароль: {registerPassword}</li>
-//             <li>Ваш пол: {registerGender === "man" ? "Мужской" : "Женский"}</li>
-//           </ul>
-//         </div>
-//       ) : (
-//         <></>
-//       )}
-//     </form>
-//   );
-// };
+  return (
+    <form className="wrapper" onSubmit={handleSubmit(onSubmit)}>
+      <h3>Регистрация пользователя</h3>
+      <label>
+        Введите ваше имя
+        <input
+          type="text"
+          {...register("name", {
+            required: true,
+            minLength: {
+              value: 2,
+              message: "Слишком короткое имя, используйте более 2 символов",
+            },
+            maxLength: {
+              value: 20,
+              message: "Слишком длинное имя, используйте максимум 20 символов",
+            },
+          })}
+          placeholder="Введите ваше имя"
+        />
+        {/* {errors.name && <p>{errors.name.message}</p>} */}
+      </label>
+
+      <label>
+        Введите вашу фамилию
+        <input
+          type="text"
+          {...register("subName", {
+            required: true,
+            minLength: {
+              value: 2,
+              message: "Слишком коротко, используйте более 2 символов",
+            },
+            maxLength: {
+              value: 20,
+              message: "Слишком длинно, используйте максимум 20 символов",
+            },
+          })}
+          placeholder="Введите вашу фамилию"
+        />
+      </label>
+      <label>
+        Введите вашу почту
+        <input
+          type="email"
+          {...register("email", {
+            required: true,
+            minLength: {
+              value: 3,
+              message: "Слишком короткий логин, используйте более 3 символов",
+            },
+          })}
+          placeholder="Введите вашу почту"
+        />
+      </label>
+
+      <label>
+        Введите ваш пароль
+        <input
+          type="password"
+          {...register("password", {
+            required: "Поле обязательно для заполнения",
+            minLength: {
+              value: 3,
+              message: "Слишком короткий логин, используйте более 3 символов",
+            },
+            maxLength: {
+              value: 20,
+              message:
+                "Слишком длинный логин, используйте максимум 20 символов",
+            },
+          })}
+          placeholder="Введите ваш пароль"
+        />
+      </label>
+
+      <label>
+        Выберите свой пол
+        <select
+          {...register("regGender", {
+            required: true,
+          })}
+        >
+          <option value="nothin">Не выбрано</option>
+          <option value="man">Мужской</option>
+          <option value="wooman">Женский</option>
+        </select>
+      </label>
+      <label>
+        С правилами ознакомлен
+        <input
+          type="checkbox"
+          className="input-checkbox"
+          checked={checked}
+          onChange={() => {
+            isChecked(!checked);
+          }}
+        />
+      </label>
+
+      <button type="submit" disabled={!checked}>
+        {" "}
+        Регистрация
+      </button>
+      {name && subName && email && password && regGender ? (
+        <div>
+          <h3>Проверьте введенные вами данные</h3>
+          <ul>
+            <li>Ваше имя: {name}</li>
+            <li>Ваша фамилия: {subName}</li>
+            <li>Ваша почта: {email}</li>
+            <li>Ваш пароль: {password}</li>
+            <li>Ваш пол: {regGender === "man" ? "Мужской" : "Женский"}</li>
+          </ul>
+        </div>
+      ) : (
+        <></>
+      )}
+    </form>
+  );
+};
