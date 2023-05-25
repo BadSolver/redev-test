@@ -48,11 +48,11 @@ export const Login = () => {
           placeholder="Введите ваше имя"
         />
       </label>
-      {errors.login && <p>{errors.login.message}</p>}
+      {/* {errors.login && <p>{errors.login.message}</p>} */}
       <label>
         Введите ваш пароль
         <input
-        type="password"
+          type="password"
           {...register("password", {
             required: "Поле обязательно для заполнения",
             minLength: {
@@ -68,10 +68,10 @@ export const Login = () => {
           placeholder="Введите ваш пароль"
         />
       </label>
-      {errors.password && <p>{errors.password.message}</p>}
+      {/* {errors.password && <p>{errors.password.message}</p>} */}
 
       <div className="button-block">
-        <button type="submit" disabled={!isValid}>Войти </button>
+        <button type="submit">Войти </button>
         <button
           type="button"
           onClick={() => {
@@ -80,6 +80,12 @@ export const Login = () => {
         >
           Регистрация
         </button>
+        <button
+          type="button"
+          onClick={() => {
+            navigate("/todo");
+          }}
+        > todo</button>
       </div>
 
       {userName && userPassword ? (
