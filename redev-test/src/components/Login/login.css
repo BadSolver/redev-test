@@ -18,12 +18,11 @@ button {
     border-radius: 10px;
     border: none;
     cursor: pointer;
+    transition: transform ease-in-out .5s;
 }
 
 button:hover {
-    padding: 18px;
-    transition: all .3s;
-    background-color: aquamarine;
+    transform: scale(1.1)  
 }
 
 input {

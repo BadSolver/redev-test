@@ -23,7 +23,7 @@ export const Register = () => {
     formState: { errors, isValid },
     handleSubmit,
     reset,
-  } = useForm();
+  } = useForm({ mode: "onChange" });
 
   const onSubmit = (data) => {
     alert(JSON.stringify(data));

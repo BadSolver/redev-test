@@ -15,7 +15,7 @@ export const Login = () => {
     formState: { errors, isValid },
     handleSubmit,
     reset,
-  } = useForm();
+  } = useForm({ mode: "onChange" });
 
   const onSubmit = (data) => {
     alert(JSON.stringify(data));
@@ -48,7 +48,7 @@ export const Login = () => {
           placeholder="Введите ваше имя"
         />
       </label>
-      {/* {errors.login && <p>{errors.login.message}</p>} */}
+      {errors.login && <p>Ошибка</p>}
       <label>
         Введите ваш пароль
         <input
@@ -68,7 +68,7 @@ export const Login = () => {
           placeholder="Введите ваш пароль"
         />
       </label>
-      {/* {errors.password && <p>{errors.password.message}</p>} */}
+      {errors.password && <p>ошибка</p>}
 
       <div className="button-block">
         <button type="submit">Войти </button>
@@ -85,7 +85,9 @@ export const Login = () => {
           onClick={() => {
             navigate("/todo");
           }}
-        > todo</button>
+        >
+          todo
+        </button>
       </div>
 
       {userName && userPassword ? (

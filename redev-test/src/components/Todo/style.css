@@ -1,0 +1,36 @@
+.todo-form {
+    display: flex;
+    flex-direction: row;
+}
+
+.todo-input {
+    width: 100%;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    outline: none;
+    margin-top: 20px;
+}
+
+.todo-add-btn {
+    max-width: 25%;
+    height: 61px;
+    align-self:flex-end;
+    background-color: rgb(255, 174, 0);
+    text-align: center;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    cursor: pointer;
+    transition: transform ease-in-out .5s;
+}
+.todo-add-btn:hover {
+    transform: scale(1.1);
+}
+.error-msg {
+    color: rgb(223, 76, 76);
+    font-size: 24px;
+    padding: 10px 0;
+}
+.btn-delete-all {
+    display: block;
+    margin: 35px auto;
+}
