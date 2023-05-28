@@ -4,7 +4,7 @@ import "./style.css";
 
 export const TodoItem = ({ task, deleteOneTask, editTask }) => {
   return (
-    <div className="item-wrapper">
+    <li className="item-wrapper">
       <button
         type="button"
         className="todo-edit-btn"
@@ -12,7 +12,7 @@ export const TodoItem = ({ task, deleteOneTask, editTask }) => {
           editTask(task.id);
         }}
       ></button>
-      <li key={task.id}>{task.text}</li>
+      <span className="todo-text">{task.text}</span>
       <button
         type="button"
         className="todo-delete-btn"
@@ -20,6 +20,6 @@ export const TodoItem = ({ task, deleteOneTask, editTask }) => {
           deleteOneTask(task.id);
         }}
       ></button>
-    </div>
+    </li>
   );
 };

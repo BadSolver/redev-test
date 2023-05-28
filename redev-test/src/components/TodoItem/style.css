@@ -13,7 +13,7 @@
     background-color: #FFAE00;
     border-radius: 10px;
 }
-li {
+.todo-text{
     width: 350px;
 }
 .todo-item-checkbox {

@@ -1,43 +1,71 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./style.css";
 import { useForm } from "react-hook-form";
 
 export const Register = () => {
-  //   const [name, setName] = useState("");
-  //   const [subName, setSubName] = useState("");
-  //   const [email, setEmail] = useState("");
-  //   const [newPassword, setNewPassword] = useState("");
+  const [userDataFromServer, setUserDataFromServer] = useState();
   const [registerData, setRegisterData] = useState({
     name: "",
-    subName: "",
+    userName: "",
     email: "",
     password: "",
-    regGender: "",
+    regGender: false,
+    age: "",
   });
 
-  const { name, subName, email, password, regGender } = registerData;
-  console.log(registerData);
-  console.log(regGender);
+  useEffect(() => {
+    console.log(userDataFromServer);
+  }, [userDataFromServer]);
+  const { name, userName, email, password, regGender, age } = registerData;
+
+  const registerUser = async (userData) => {
+    if (userData.regGender === "man") {
+      userData.regGender = true;
+    } else if (userData.regGender === "wooman") {
+      userData.regGender = false;
+    }
+
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: userData.name,
+        username: userData.userName,
+        email: userData.email,
+        password: userData.password,
+        age: userData.age,
+        isMan: userData.regGender,
+      }),
+    };
+
+    const urlForReg =
+      "https://first-node-js-app-r.herokuapp.com/api/users/register";
+    const response = await fetch(urlForReg, options);
+    const data = await response.json();
+    setUserDataFromServer(data);
+  };
+
   const {
     register,
-    formState: { errors, isValid },
+    formState: { errors },
     handleSubmit,
     reset,
   } = useForm({ mode: "onChange" });
 
   const onSubmit = (data) => {
-    alert(JSON.stringify(data));
     setRegisterData({
       name: data.name,
-      subName: data.subName,
+      userName: data.userName,
       email: data.email,
       password: data.password,
       regGender: data.regGender,
+      age: data.age,
     });
-
+    registerUser(data);
     reset();
   };
-  console.log(errors.name);
   const [checked, isChecked] = useState(false);
 
   return (
@@ -67,7 +95,7 @@ export const Register = () => {
         Введите вашу фамилию
         <input
           type="text"
-          {...register("subName", {
+          {...register("userName", {
             required: true,
             minLength: {
               value: 2,
@@ -80,6 +108,7 @@ export const Register = () => {
           })}
           placeholder="Введите вашу фамилию"
         />
+        {/* {errors.userName && <p>{errors.userName.message}</p>} */}
       </label>
       <label>
         Введите вашу почту
@@ -89,12 +118,13 @@ export const Register = () => {
             required: true,
             minLength: {
               value: 3,
-              message: "Слишком короткий логин, используйте более 3 символов",
+              message: "Слишком короткая почта, используйте более 3 символов",
             },
           })}
           placeholder="Введите вашу почту"
         />
       </label>
+      {/* {errors.email && <p>{errors.email.message}</p>} */}
 
       <label>
         Введите ваш пароль
@@ -123,10 +153,29 @@ export const Register = () => {
             required: true,
           })}
         >
-          <option value="nothin">Не выбрано</option>
+          <option>Не выбрано</option>
           <option value="man">Мужской</option>
           <option value="wooman">Женский</option>
         </select>
+      </label>
+      <label>
+        Введите ваш возраст
+        <input
+          type="number"
+          {...register("age", {
+            required: true,
+            minLength: {
+              value: 1,
+              message: "Используйте более 1 и более символов",
+            },
+            maxLength: {
+              value: 2,
+              message: "Используйте максимум 2 символа",
+            },
+          })}
+          placeholder="Введите ваш возраст"
+        />
+        {/* {errors.age && <p>{errors.age.message}</p>} */}
       </label>
       <label>
         С правилами ознакомлен
@@ -139,20 +188,19 @@ export const Register = () => {
           }}
         />
       </label>
-
       <button type="submit" disabled={!checked}>
-        {" "}
         Регистрация
       </button>
-      {name && subName && email && password && regGender ? (
+      {name && userName && email && password && regGender ? (
         <div>
           <h3>Проверьте введенные вами данные</h3>
           <ul>
             <li>Ваше имя: {name}</li>
-            <li>Ваша фамилия: {subName}</li>
+            <li>Ваша фамилия: {userName}</li>
             <li>Ваша почта: {email}</li>
             <li>Ваш пароль: {password}</li>
-            <li>Ваш пол: {regGender === "man" ? "Мужской" : "Женский"}</li>
+            <li>Ваш пол: {regGender}</li>
+            <li>Ваш возраст: {age} </li>
           </ul>
         </div>
       ) : (

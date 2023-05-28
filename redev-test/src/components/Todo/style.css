@@ -20,10 +20,12 @@
     border-top-left-radius: 0px;
     border-bottom-left-radius: 0px;
     cursor: pointer;
-    transition: transform ease-in-out .5s;
+    transition: all ease-in-out .5s;
 }
 .todo-add-btn:hover {
     transform: scale(1.1);
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
 }
 .error-msg {
     color: rgb(223, 76, 76);

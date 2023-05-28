@@ -1,14 +1,18 @@
 import { TodoList } from "components/TodoList";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import "./style.css";
 
 export const Todo = () => {
   const [toDo, setToDo] = useState([]);
   const [searchTodo, setSearchTodo] = useState([]);
-  const [editMode, setEditMode] = useState(false);
-  const [editTaskId, setditTaskId] = useState(null);
-  const [editText, setEditText] = useState("");
+
+  useEffect(() => {
+    const savedData = localStorage.getItem("task");
+    if (savedData) {
+      setToDo(JSON.parse(savedData));
+    }
+  }, []);
 
   const {
     register,
@@ -17,33 +21,8 @@ export const Todo = () => {
     formState: { errors },
   } = useForm({ mode: "onChange" });
 
-  const editTask = (taskId) => {
-    const taskToEdit = toDo.find((task) => task.id === taskId);
-    setEditMode(true);
-    setditTaskId(taskId);
-    setEditText(taskToEdit.text);
-  };
-  const updateTask = () => {
-    const updatedTask = toDo.map((task) => {
-      if (task.id === editTaskId) {
-        return { ...task, text: editText };
-      }
-      return task;
-    });
-
-    setToDo(updatedTask);
-    setEditMode(false);
-    setditTaskId(null);
-    setEditText("");
-  };
-  const cancelEdit = () => {
-    setEditMode(false)
-    setditTaskId(null)
-    setEditText('')
-  }
-
-  const setText = (e) => {
-    setEditText(e.target.value);
+  const updatedTask = (data) => {
+    setToDo(data);
   };
 
   const deleteOneTask = (taskId) => {
@@ -77,6 +56,10 @@ export const Todo = () => {
     );
     setSearchTodo(updatedTask);
   };
+
+  useEffect(() => {
+    localStorage.setItem("task", JSON.stringify(toDo));
+  }, [toDo]);
 
   return (
     <div className="todo-wrapper">
@@ -117,13 +100,7 @@ export const Todo = () => {
       <TodoList
         data={searchTodo.length > 0 ? searchTodo : toDo}
         deleteOneTask={deleteOneTask}
-        editTask={editTask}
-        setText={setText}
-        editMode={editMode}
-        updateTask={updateTask}
-        editText={editText}
-        editTaskId={editTaskId}
-        cancelEdit={cancelEdit}
+        updatedTask={updatedTask}
       />
       {toDo.length >= 2 && (
         <button className="btn-delete-all" onClick={deleteAllTasks}>
