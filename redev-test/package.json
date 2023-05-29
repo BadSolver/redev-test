@@ -1,7 +1,7 @@
 {
-  "name": "redev-test",
+  "name": "redev-todo",
   "version": "0.1.0",
-  "homepage": "https://badSolver.github.io/redev-test",
+  "homepage": "https://badSolver.github.io/redev-todo",
   "private": true,
   "compilerOptions": {
     "baseUrl": "./src",
