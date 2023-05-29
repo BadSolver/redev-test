@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+// @ts-nocheck
+import React, { useState } from "react";
 import "./style.css";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import "../Login/login.css";
 
 export const Register = () => {
-  const [userDataFromServer, setUserDataFromServer] = useState();
   const [registerData, setRegisterData] = useState({
     name: "",
     userName: "",
@@ -12,10 +14,8 @@ export const Register = () => {
     regGender: false,
     age: "",
   });
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log(userDataFromServer);
-  }, [userDataFromServer]);
   const { name, userName, email, password, regGender, age } = registerData;
 
   const registerUser = async (userData) => {
@@ -43,8 +43,8 @@ export const Register = () => {
     const urlForReg =
       "https://first-node-js-app-r.herokuapp.com/api/users/register";
     const response = await fetch(urlForReg, options);
-    const data = await response.json();
-    setUserDataFromServer(data);
+    const responseData = await response.json();
+    console.log(responseData);
   };
 
   const {
@@ -88,7 +88,7 @@ export const Register = () => {
           })}
           placeholder="Введите ваше имя"
         />
-        {/* {errors.name && <p>{errors.name.message}</p>} */}
+        {errors.name && <p>{errors.name.message}</p>}
       </label>
 
       <label>
@@ -108,7 +108,7 @@ export const Register = () => {
           })}
           placeholder="Введите вашу фамилию"
         />
-        {/* {errors.userName && <p>{errors.userName.message}</p>} */}
+        {errors.userName && <p>{errors.userName.message}</p>}
       </label>
       <label>
         Введите вашу почту
@@ -124,7 +124,7 @@ export const Register = () => {
           placeholder="Введите вашу почту"
         />
       </label>
-      {/* {errors.email && <p>{errors.email.message}</p>} */}
+      {errors.email && <p>{errors.email.message}</p>}
 
       <label>
         Введите ваш пароль
@@ -175,7 +175,7 @@ export const Register = () => {
           })}
           placeholder="Введите ваш возраст"
         />
-        {/* {errors.age && <p>{errors.age.message}</p>} */}
+        {errors.age && <p>{errors.age.message}</p>}
       </label>
       <label>
         С правилами ознакомлен
@@ -188,9 +188,19 @@ export const Register = () => {
           }}
         />
       </label>
-      <button type="submit" disabled={!checked}>
-        Регистрация
-      </button>
+      <div className="button-block">
+        <button type="submit" disabled={!checked}>
+          Регистрация
+        </button>
+        <button
+          type="submit"
+          onClick={() => {
+            navigate("/");
+          }}
+        >
+          Авторизация
+        </button>
+      </div>
       {name && userName && email && password && regGender ? (
         <div>
           <h3>Проверьте введенные вами данные</h3>

@@ -91,6 +91,7 @@ export const Todo = () => {
                 {...register("search")}
                 className="todo-input"
                 placeholder="Введите название задачи, которую ищете"
+                onChange={(e) => filterByText(e.target.value)}
               />
             </label>
             <input type="submit" className="todo-add-btn" value="Найти" />
