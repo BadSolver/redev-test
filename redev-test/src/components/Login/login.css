@@ -9,3 +9,27 @@
     display: flex;
     gap: 20px;
 }
+
+button {
+    width: 200px;
+    padding: 15px;
+    font-size: 16px;
+    margin-top: 20px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: transform ease-in-out .5s;
+}
+
+button:hover {
+    transform: scale(1.1)  
+}
+
+input {
+    width: 100%;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-radius: 10px;
+    border: none;
+    font-size: 18px;
+}

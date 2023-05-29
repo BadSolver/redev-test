@@ -5,12 +5,12 @@
 }
 select {
     width: 424px;
-    margin-top: 20px;
     padding: 15px;
     border-radius: 10px;
     border: none;
 }
 label{
+    margin-top: 20px;
     width: 424px;
     text-align: left;
 } 
