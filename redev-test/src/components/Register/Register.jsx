@@ -92,7 +92,7 @@ export const Register = () => {
       </label>
 
       <label>
-        Введите вашу фамилию
+        Введите ваш никнейм
         <input
           type="text"
           {...register("userName", {
@@ -106,7 +106,7 @@ export const Register = () => {
               message: "Слишком длинно, используйте максимум 20 символов",
             },
           })}
-          placeholder="Введите вашу фамилию"
+          placeholder="Введите ваш никнейм"
         />
         {errors.userName && <p>{errors.userName.message}</p>}
       </label>
@@ -133,19 +133,25 @@ export const Register = () => {
           {...register("password", {
             required: "Поле обязательно для заполнения",
             minLength: {
-              value: 3,
-              message: "Слишком короткий логин, используйте более 3 символов",
+              value: 8,
+              message: "Слишком короткий логин, используйте более 8 символов",
             },
             maxLength: {
               value: 20,
               message:
                 "Слишком длинный логин, используйте максимум 20 символов",
             },
+            pattern: {
+              value:
+                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/,
+              message:
+                "Пароль должен содержать как минимум 1 заглавную букву, 1 прописную букву, 1 число и 1 специальный символ",
+            },
           })}
           placeholder="Введите ваш пароль"
         />
       </label>
-
+      {errors.password && <p>{errors.password.message}</p>}
       <label>
         Выберите свой пол
         <select
