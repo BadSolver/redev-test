@@ -7,41 +7,26 @@ import "../Login/login.css";
 
 export const Register = () => {
   const [registerData, setRegisterData] = useState({
-    name: "",
-    userName: "",
+    username: "",
     email: "",
     password: "",
-    regGender: false,
+    gender: "",
     age: "",
   });
   const navigate = useNavigate();
 
-  const { name, userName, email, password, regGender, age } = registerData;
+  const { username, email, password, gender, age } = registerData;
 
   const registerUser = async (userData) => {
-    if (userData.regGender === "man") {
-      userData.regGender = true;
-    } else if (userData.regGender === "wooman") {
-      userData.regGender = false;
-    }
-
     const options = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        name: userData.name,
-        username: userData.userName,
-        email: userData.email,
-        password: userData.password,
-        age: userData.age,
-        isMan: userData.regGender,
-      }),
+      body: JSON.stringify(userData),
     };
 
-    const urlForReg =
-      "https://first-node-js-app-r.herokuapp.com/api/users/register";
+    const urlForReg = process.env.REACT_APP_URL_FOR_REGISTRATION;
     const response = await fetch(urlForReg, options);
     const responseData = await response.json();
     console.log(responseData);
@@ -55,14 +40,7 @@ export const Register = () => {
   } = useForm({ mode: "onChange" });
 
   const onSubmit = (data) => {
-    setRegisterData({
-      name: data.name,
-      userName: data.userName,
-      email: data.email,
-      password: data.password,
-      regGender: data.regGender,
-      age: data.age,
-    });
+    setRegisterData(data);
     registerUser(data);
     reset();
   };
@@ -71,31 +49,12 @@ export const Register = () => {
   return (
     <form className="wrapper" onSubmit={handleSubmit(onSubmit)}>
       <h3>Регистрация пользователя</h3>
-      <label>
-        Введите ваше имя
-        <input
-          type="text"
-          {...register("name", {
-            required: true,
-            minLength: {
-              value: 2,
-              message: "Слишком короткое имя, используйте более 2 символов",
-            },
-            maxLength: {
-              value: 20,
-              message: "Слишком длинное имя, используйте максимум 20 символов",
-            },
-          })}
-          placeholder="Введите ваше имя"
-        />
-        {errors.name && <p>{errors.name.message}</p>}
-      </label>
 
       <label>
         Введите ваш никнейм
         <input
           type="text"
-          {...register("userName", {
+          {...register("username", {
             required: true,
             minLength: {
               value: 2,
@@ -108,7 +67,7 @@ export const Register = () => {
           })}
           placeholder="Введите ваш никнейм"
         />
-        {errors.userName && <p>{errors.userName.message}</p>}
+        {errors.username && <p>{errors.username.message}</p>}
       </label>
       <label>
         Введите вашу почту
@@ -155,13 +114,13 @@ export const Register = () => {
       <label>
         Выберите свой пол
         <select
-          {...register("regGender", {
+          {...register("gender", {
             required: true,
           })}
         >
           <option>Не выбрано</option>
-          <option value="man">Мужской</option>
-          <option value="wooman">Женский</option>
+          <option value="male">Мужской</option>
+          <option value="female">Женский</option>
         </select>
       </label>
       <label>
@@ -207,15 +166,14 @@ export const Register = () => {
           Авторизация
         </button>
       </div>
-      {name && userName && email && password && regGender ? (
+      {username && email && password && gender ? (
         <div>
           <h3>Проверьте введенные вами данные</h3>
           <ul>
-            <li>Ваше имя: {name}</li>
-            <li>Ваша фамилия: {userName}</li>
+            <li>Ваша фамилия: {username}</li>
             <li>Ваша почта: {email}</li>
             <li>Ваш пароль: {password}</li>
-            <li>Ваш пол: {regGender}</li>
+            <li>Ваш пол: {gender}</li>
             <li>Ваш возраст: {age} </li>
           </ul>
         </div>
