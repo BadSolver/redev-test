@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+// @ts-nocheck
+import React, { useState } from "react";
 import "./login.css";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -8,13 +9,6 @@ export const Login = ({ updateToken }) => {
     userEmail: "",
     userPassword: "",
   });
-  const [userToken, setUserToken] = useState("");
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setUserToken(JSON.parse(token));
-    }
-  }, []);
 
   const navigate = useNavigate();
 
@@ -30,17 +24,12 @@ export const Login = ({ updateToken }) => {
 
     const response = await fetch(url, options);
     const responseData = await response.json();
-    await setUserToken(responseData.token);
-    await updateToken(responseData.token);
-    console.log(responseData);
+    localStorage.setItem("token", JSON.stringify(responseData.token));
+    updateToken(responseData.token);
     if (responseData.token) {
       navigate("/todo");
     }
   };
-
-  useEffect(() => {
-    localStorage.setItem("token", JSON.stringify(userToken));
-  }, [userToken]);
 
   const {
     register,
@@ -49,9 +38,9 @@ export const Login = ({ updateToken }) => {
     reset,
   } = useForm({ mode: "onChange" });
 
-  const onSubmit = async (data) => {
+  const onSubmit = (data) => {
     setFormdData(data);
-    await loginUser(data);
+    loginUser(data);
 
     reset();
   };
@@ -79,7 +68,7 @@ export const Login = ({ updateToken }) => {
             })}
             placeholder="Введите вашу почту"
           />
-          {/* {errors.email && <p>{errors.email.message}</p>} */}
+          {errors.email && <p>{errors.email.message}</p>}
         </label>
         {errors.login && <p>Ошибка</p>}
         <label>
