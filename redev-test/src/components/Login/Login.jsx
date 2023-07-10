@@ -4,7 +4,7 @@ import "./login.css";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
-export const Login = ({ updateToken }) => {
+export const Login = () => {
   const [formData, setFormdData] = useState({
     userEmail: "",
     userPassword: "",
@@ -25,7 +25,6 @@ export const Login = ({ updateToken }) => {
     const response = await fetch(url, options);
     const responseData = await response.json();
     localStorage.setItem("token", JSON.stringify(responseData.token));
-    updateToken(responseData.token);
     if (responseData.token) {
       navigate("/todo");
     }

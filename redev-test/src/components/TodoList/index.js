@@ -1,3 +1,4 @@
-const { TodoList } = require("./TodoList");
+import { TodoList } from "./TodoList";
+
 
 export { TodoList };

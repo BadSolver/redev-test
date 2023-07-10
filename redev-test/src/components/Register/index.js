@@ -1,3 +1,3 @@
-const { Register } = require("./Register");
+import { Register } from "./Register";
 
 export { Register };

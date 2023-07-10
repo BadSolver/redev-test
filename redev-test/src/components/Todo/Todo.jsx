@@ -1,7 +1,7 @@
-import { TodoList } from "components/TodoList";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import "./style.css";
+import { TodoList } from "components";
 
 export const Todo = () => {
   const [toDo, setToDo] = useState([]);
