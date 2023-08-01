@@ -1,92 +1,25 @@
-import React, { useEffect, useState } from "react";
+// @ts-nocheck
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import "./style.css";
-import { TodoList } from "components";
+import { TodoList, InputField } from "components";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteAllTasks } from "../../store/todoSlice";
 
 export const Todo = () => {
-  const [toDo, setToDo] = useState([]);
+  const dispatch = useDispatch();
+
   const [searchTodo, setSearchTodo] = useState([]);
-  const token = localStorage.getItem("token");
+  const toDo = useSelector((state) => state.todo.todo);
+
   const {
     register,
-    reset,
     handleSubmit,
     formState: { errors },
   } = useForm({ mode: "onChange" });
 
-  const getAllTasks = async () => {
-    const url = process.env.REACT_APP_URL_FOR_GET_ALL_TASKS;
-    const options = {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    const response = await fetch(url, options);
-    const responseData = await response.json();
-    setToDo(responseData);
-  };
-
-  useEffect(() => {
-    getAllTasks();
-  }, []);
-
-  const postOneTask = async (data) => {
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ title: data.title }),
-    };
-
-    const url = process.env.REACT_APP_URL_FOR_ONE_TASK;
-    const response = await fetch(url, options);
-    const resultData = await response.json();
-    const newTasks = [...toDo, resultData];
-    setToDo(newTasks);
-  };
-
   const updatedTask = async (data) => {
-    setToDo(data);
-  };
-
-  const deletOneTaskFromData = async (taskId) => {
-    const url = process.env.REACT_APP_URL_FOR_DELETE_ONE_TASK + taskId;
-    const options = {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    };
-
-    const updatedTask = toDo.filter((task) => task.id !== taskId);
-    const updatedSearchtask = searchTodo.filter((task) => task.id !== taskId);
-
-    const response = await fetch(url, options);
-    await response.json();
-    setToDo(updatedTask);
-    setSearchTodo(updatedSearchtask);
-  };
-
-  const deleteAllTasks = () => {
-    setToDo([]);
-    setSearchTodo([]);
-  };
-
-  const onSubmit = (data) => {
-    const randomId = Math.round(Math.random() * 100000);
-    data.id = randomId;
-    data.isCompleted = false;
-    data.title = data.text;
-    data.user_id = randomId;
-    const newTask = [...toDo, data];
-    postOneTask(data);
-    setToDo(newTask);
-    reset();
+    // setToDo(data);
   };
 
   const onSubmit2 = (data) => {
@@ -104,22 +37,7 @@ export const Todo = () => {
   return (
     <div className="todo-wrapper">
       <h1>Todo</h1>
-      <form onSubmit={handleSubmit(onSubmit)} className="todo-form">
-        <label>
-          <input
-            type="text"
-            {...register("text", {
-              minLength: {
-                value: 3,
-                message: "Минимум 3 символа",
-              },
-            })}
-            placeholder="Введите задачу"
-            className="todo-input"
-          />
-        </label>
-        <input type="submit" value="Создать дело" className="todo-add-btn" />
-      </form>
+      <InputField />
       {errors.text ? <p className="error-msg"> Ошибка </p> : <></>}
       {toDo.length > 2 && (
         <>
@@ -140,11 +58,13 @@ export const Todo = () => {
       )}
       <TodoList
         allTasks={searchTodo.length > 0 ? searchTodo : toDo}
-        deleteOneTask={deletOneTaskFromData}
         updatedTask={updatedTask}
       />
       {toDo.length >= 2 && (
-        <button className="btn-delete-all" onClick={deleteAllTasks}>
+        <button
+          className="btn-delete-all"
+          onClick={() => dispatch(deleteAllTasks())}
+        >
           Delete all tasks
         </button>
       )}

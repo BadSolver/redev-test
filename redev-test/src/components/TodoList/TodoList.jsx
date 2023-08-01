@@ -1,8 +1,18 @@
+// @ts-nocheck
 import { TodoItem } from "components/TodoItem";
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import "./style.css";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllTodoFromServer } from "store/todoSlice";
 
 export const TodoList = ({ allTasks, deleteOneTask, updatedTask }) => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getAllTodoFromServer());
+  }, [dispatch]);
+  const todos = useSelector((state) => state.todo.todo);
+ 
+
   const token = localStorage.getItem("token");
   const [editMode, setEditMode] = useState(false);
   const [editTaskId, setditTaskId] = useState(null);
@@ -53,16 +63,15 @@ export const TodoList = ({ allTasks, deleteOneTask, updatedTask }) => {
   return (
     <div className="todo-list-wrapper">
       <ul>
-        {allTasks.map((task, index) => {
+        {todos.map((todo, index) => {
           return (
             <Fragment key={index}>
               <TodoItem
                 key={index}
-                task={task}
-                deleteOneTask={deleteOneTask}
-                editTask={editTask}
+                todo = {todo}
+                // editTask={editTask}
               />
-              {editMode && editTaskId === task.id ? (
+              {editMode && editTaskId === todo.id ? (
                 <li>
                   <form onSubmit={updateTask} className="edit-form">
                     <input type="text" value={editText} onChange={setText} />
