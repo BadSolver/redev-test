@@ -2,21 +2,23 @@ import { TodoItem } from "components/TodoItem";
 import React, { Fragment, useState } from "react";
 import "./style.css";
 
-export const TodoList = ({ data, deleteOneTask, updatedTask }) => {
+export const TodoList = ({ allTasks, deleteOneTask, updatedTask }) => {
+  const token = localStorage.getItem("token");
   const [editMode, setEditMode] = useState(false);
   const [editTaskId, setditTaskId] = useState(null);
   const [editText, setEditText] = useState("");
+  const [taskId, setTaskId] = useState(null);
 
-  const editTask = (taskId) => {
-    const taskToEdit = data.find((task) => task.id === taskId);
+  const editTask = async (taskId) => {
     setEditMode(true);
     setditTaskId(taskId);
-    setEditText(taskToEdit.text);
+    setTaskId(taskId);
   };
+
   const updateTask = () => {
-    const updateTask = data.map((task) => {
+    const updateTask = allTasks.map((task) => {
       if (task.id === editTaskId) {
-        return { ...task, text: editText };
+        return { ...task, title: editText };
       }
       return task;
     });
@@ -31,28 +33,43 @@ export const TodoList = ({ data, deleteOneTask, updatedTask }) => {
     setditTaskId(null);
     setEditText("");
   };
-
   const setText = (e) => {
     setEditText(e.target.value);
   };
+
+  const edTask = async () => {
+    const url = process.env.REACT_APP_URL_FOR_EDIT_ONE_TASKS + taskId;
+    const options = {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ title: editText }),
+    };
+    await fetch(url, options);
+  };
+
   return (
     <div className="todo-list-wrapper">
       <ul>
-        {data.map((item, index) => {
+        {allTasks.map((task, index) => {
           return (
             <Fragment key={index}>
               <TodoItem
                 key={index}
-                task={item}
+                task={task}
                 deleteOneTask={deleteOneTask}
                 editTask={editTask}
               />
-              {editMode && editTaskId === item.id ? (
+              {editMode && editTaskId === task.id ? (
                 <li>
                   <form onSubmit={updateTask} className="edit-form">
                     <input type="text" value={editText} onChange={setText} />
                     <div className="edit-btn">
-                      <button type="submit">Сохранить</button>
+                      <button type="submit" onClick={edTask}>
+                        Сохранить
+                      </button>
                       <button type="button" onClick={cancelEdit}>
                         Отмена
                       </button>

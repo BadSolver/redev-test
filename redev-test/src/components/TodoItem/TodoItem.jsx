@@ -12,7 +12,7 @@ export const TodoItem = ({ task, deleteOneTask, editTask }) => {
           editTask(task.id);
         }}
       ></button>
-      <span className="todo-text">{task.text}</span>
+      <span className="todo-text">{task.title}</span>
       <button
         type="button"
         className="todo-delete-btn"

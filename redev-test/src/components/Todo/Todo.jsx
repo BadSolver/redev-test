@@ -6,14 +6,7 @@ import { TodoList } from "components";
 export const Todo = () => {
   const [toDo, setToDo] = useState([]);
   const [searchTodo, setSearchTodo] = useState([]);
-
-  useEffect(() => {
-    const savedData = localStorage.getItem("task");
-    if (savedData) {
-      setToDo(JSON.parse(savedData));
-    }
-  }, []);
-
+  const token = localStorage.getItem("token");
   const {
     register,
     reset,
@@ -21,13 +14,60 @@ export const Todo = () => {
     formState: { errors },
   } = useForm({ mode: "onChange" });
 
-  const updatedTask = (data) => {
+  const getAllTasks = async () => {
+    const url = process.env.REACT_APP_URL_FOR_GET_ALL_TASKS;
+    const options = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const response = await fetch(url, options);
+    const responseData = await response.json();
+    setToDo(responseData);
+  };
+
+  useEffect(() => {
+    getAllTasks();
+  }, []);
+
+  const postOneTask = async (data) => {
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ title: data.title }),
+    };
+
+    const url = process.env.REACT_APP_URL_FOR_ONE_TASK;
+    const response = await fetch(url, options);
+    const resultData = await response.json();
+    const newTasks = [...toDo, resultData];
+    setToDo(newTasks);
+  };
+
+  const updatedTask = async (data) => {
     setToDo(data);
   };
 
-  const deleteOneTask = (taskId) => {
+  const deletOneTaskFromData = async (taskId) => {
+    const url = process.env.REACT_APP_URL_FOR_DELETE_ONE_TASK + taskId;
+    const options = {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
     const updatedTask = toDo.filter((task) => task.id !== taskId);
     const updatedSearchtask = searchTodo.filter((task) => task.id !== taskId);
+
+    const response = await fetch(url, options);
+    await response.json();
     setToDo(updatedTask);
     setSearchTodo(updatedSearchtask);
   };
@@ -40,8 +80,11 @@ export const Todo = () => {
   const onSubmit = (data) => {
     const randomId = Math.round(Math.random() * 100000);
     data.id = randomId;
-    data.checked = false;
+    data.isCompleted = false;
+    data.title = data.text;
+    data.user_id = randomId;
     const newTask = [...toDo, data];
+    postOneTask(data);
     setToDo(newTask);
     reset();
   };
@@ -52,14 +95,11 @@ export const Todo = () => {
 
   const filterByText = (taskText) => {
     const updatedTask = toDo.filter((task) =>
-      task.text.toLowerCase().includes(taskText.toLowerCase())
+      task.title.toLowerCase().includes(taskText.toLowerCase())
     );
-    setSearchTodo(updatedTask);
-  };
 
-  useEffect(() => {
-    localStorage.setItem("task", JSON.stringify(toDo));
-  }, [toDo]);
+    return updatedTask.length === 0 ? [] : setSearchTodo(updatedTask);
+  };
 
   return (
     <div className="todo-wrapper">
@@ -99,8 +139,8 @@ export const Todo = () => {
         </>
       )}
       <TodoList
-        data={searchTodo.length > 0 ? searchTodo : toDo}
-        deleteOneTask={deleteOneTask}
+        allTasks={searchTodo.length > 0 ? searchTodo : toDo}
+        deleteOneTask={deletOneTaskFromData}
         updatedTask={updatedTask}
       />
       {toDo.length >= 2 && (

@@ -13,6 +13,8 @@ export const Register = () => {
     gender: "",
     age: "",
   });
+
+  const [checked, isChecked] = useState(false);
   const navigate = useNavigate();
 
   const { username, email, password, gender, age } = registerData;
@@ -28,8 +30,7 @@ export const Register = () => {
 
     const urlForReg = process.env.REACT_APP_URL_FOR_REGISTRATION;
     const response = await fetch(urlForReg, options);
-    const responseData = await response.json();
-    console.log(responseData);
+    await response.json();
   };
 
   const {
@@ -44,7 +45,7 @@ export const Register = () => {
     registerUser(data);
     reset();
   };
-  const [checked, isChecked] = useState(false);
+ 
 
   return (
     <form className="wrapper" onSubmit={handleSubmit(onSubmit)}>

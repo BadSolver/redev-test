@@ -24,8 +24,8 @@ export const Login = () => {
 
     const response = await fetch(url, options);
     const responseData = await response.json();
-    localStorage.setItem("token", JSON.stringify(responseData.token));
-    if (responseData.token) {
+    localStorage.setItem("token", responseData.token);
+    if ( responseData.token) {
       navigate("/todo");
     }
   };
