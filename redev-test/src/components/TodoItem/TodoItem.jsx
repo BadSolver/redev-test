@@ -3,7 +3,7 @@ import React from "react";
 
 import "./style.css";
 import { deleteOneTaskFromServer } from "../../store/todoSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 export const TodoItem = ({ todo }) => {
   const dispatch = useDispatch();

@@ -2,16 +2,14 @@
 import { TodoItem } from "components/TodoItem";
 import React, { Fragment, useEffect, useState } from "react";
 import "./style.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getAllTodoFromServer } from "store/todoSlice";
 
-export const TodoList = ({ allTasks, deleteOneTask, updatedTask }) => {
+export const TodoList = ({ allTasks }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAllTodoFromServer());
   }, [dispatch]);
-  const todos = useSelector((state) => state.todo.todo);
- 
 
   const token = localStorage.getItem("token");
   const [editMode, setEditMode] = useState(false);
@@ -19,25 +17,24 @@ export const TodoList = ({ allTasks, deleteOneTask, updatedTask }) => {
   const [editText, setEditText] = useState("");
   const [taskId, setTaskId] = useState(null);
 
-  const editTask = async (taskId) => {
-    setEditMode(true);
-    setditTaskId(taskId);
-    setTaskId(taskId);
-  };
+  // const editTask = async (taskId) => {
+  //   setEditMode(true);
+  //   setditTaskId(taskId);
+  //   setTaskId(taskId);
+  // };
 
-  const updateTask = () => {
-    const updateTask = allTasks.map((task) => {
-      if (task.id === editTaskId) {
-        return { ...task, title: editText };
-      }
-      return task;
-    });
+  // const updateTask = () => {
+  //   const updateTask = allTasks.map((task) => {
+  //     if (task.id === editTaskId) {
+  //       return { ...task, title: editText };
+  //     }
+  //     return task;
+  //   });
 
-    updatedTask(updateTask);
-    setEditMode(false);
-    setditTaskId(null);
-    setEditText("");
-  };
+  //   setEditMode(false);
+  //   setditTaskId(null);
+  //   setEditText("");
+  // };
   const cancelEdit = () => {
     setEditMode(false);
     setditTaskId(null);
@@ -63,17 +60,17 @@ export const TodoList = ({ allTasks, deleteOneTask, updatedTask }) => {
   return (
     <div className="todo-list-wrapper">
       <ul>
-        {todos.map((todo, index) => {
+        {allTasks.map((todo, index) => {
           return (
             <Fragment key={index}>
               <TodoItem
                 key={index}
-                todo = {todo}
+                todo={todo}
                 // editTask={editTask}
               />
               {editMode && editTaskId === todo.id ? (
                 <li>
-                  <form onSubmit={updateTask} className="edit-form">
+                  <form className="edit-form">
                     <input type="text" value={editText} onChange={setText} />
                     <div className="edit-btn">
                       <button type="submit" onClick={edTask}>

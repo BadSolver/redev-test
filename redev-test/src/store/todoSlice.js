@@ -47,7 +47,7 @@ export const addTodoToServer = createAsyncThunk(
         throw new Error("Ошибка при отправке данных");
       }
       const dataResponse = await response.json();
-      console.log(dataResponse);
+
       dispatch(addTodo(dataResponse));
     } catch (error) {
       return rejectWithValue(error.message);
@@ -88,16 +88,23 @@ const todoSlice = createSlice({
     isCompleted: false,
     status: null,
     error: null,
+    searchTodo: [],
   },
   reducers: {
     addTodo(state, { payload }) {
       state.todo.push(payload);
     },
-    deleteAllTasks(state, { payload }) {
+    deleteAllTasks(state) {
       state.todo = [];
     },
     deleteOneTodo(state, { payload }) {
       state.todo = state.todo.filter((todo) => todo.id !== payload);
+      state.searchTodo = state.searchTodo.filter((todo) => todo.id !== payload);
+    },
+    searchTodo(state, { payload }) {
+      state.searchTodo = state.todo.filter((todo) =>
+        todo.title.toLowerCase().includes(payload.toLowerCase())
+      );
     },
   },
   extraReducers: (builder) => {
@@ -118,4 +125,5 @@ const todoSlice = createSlice({
 });
 
 export default todoSlice.reducer;
-export const { addTodo, deleteAllTasks, deleteOneTodo } = todoSlice.actions;
+export const { addTodo, deleteAllTasks, deleteOneTodo, searchTodo } =
+  todoSlice.actions;
