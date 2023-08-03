@@ -1,73 +1,71 @@
-import { TodoItem } from "components/TodoItem";
-import React, { Fragment, useState } from "react";
+// @ts-nocheck
+import { TodoItem } from "components";
+import React, { Fragment, useEffect, useState } from "react";
 import "./style.css";
+import { useDispatch } from "react-redux";
+import { getAllTodoFromServer, editOneTodo } from "store/todoSlice";
 
-export const TodoList = ({ allTasks, deleteOneTask, updatedTask }) => {
-  const token = localStorage.getItem("token");
+export const TodoList = ({ allTasks }) => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getAllTodoFromServer());
+  }, [dispatch]);
+
   const [editMode, setEditMode] = useState(false);
-  const [editTaskId, setditTaskId] = useState(null);
-  const [editText, setEditText] = useState("");
-  const [taskId, setTaskId] = useState(null);
+  const [taskIdToEdit, setTaskIdToEdit] = useState(null);
+  const [editedTitles, setEditedTitles] = useState("");
 
-  const editTask = async (taskId) => {
+  const editTask = (taskId, title) => {
     setEditMode(true);
-    setditTaskId(taskId);
-    setTaskId(taskId);
+    setTaskIdToEdit(taskId);
+    setEditedTitles(title || "");
   };
 
-  const updateTask = () => {
-    const updateTask = allTasks.map((task) => {
-      if (task.id === editTaskId) {
-        return { ...task, title: editText };
-      }
-      return task;
-    });
-
-    updatedTask(updateTask);
+  const handleSaveEdit = () => {
+    dispatch(editOneTodo({ id: taskIdToEdit, title: editedTitles }));
     setEditMode(false);
-    setditTaskId(null);
-    setEditText("");
+    setTaskIdToEdit(null);
+    setEditedTitles("");
   };
+
   const cancelEdit = () => {
     setEditMode(false);
-    setditTaskId(null);
-    setEditText("");
+    setTaskIdToEdit(null);
+    setEditedTitles("");
   };
-  const setText = (e) => {
-    setEditText(e.target.value);
-  };
+  //   const url = process.env.REACT_APP_URL_FOR_EDIT_ONE_TASKS + editTaskId;
+  //   const options = {
+  //     method: "PATCH",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //     body: JSON.stringify({ title: editText }),
+  //   };
 
-  const edTask = async () => {
-    const url = process.env.REACT_APP_URL_FOR_EDIT_ONE_TASKS + taskId;
-    const options = {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ title: editText }),
-    };
-    await fetch(url, options);
-  };
+  //   const response = await fetch(url, options);
+  //   const responseData = await response.json();
+  //   setEditMode(false);
+  //   console.log(responseData);
+  // };
 
   return (
     <div className="todo-list-wrapper">
       <ul>
-        {allTasks.map((task, index) => {
+        {allTasks.map((todo, index) => {
           return (
             <Fragment key={index}>
-              <TodoItem
-                key={index}
-                task={task}
-                deleteOneTask={deleteOneTask}
-                editTask={editTask}
-              />
-              {editMode && editTaskId === task.id ? (
+              <TodoItem key={index} todo={todo} editTask={editTask} />
+              {editMode && taskIdToEdit === todo.id ? (
                 <li>
-                  <form onSubmit={updateTask} className="edit-form">
-                    <input type="text" value={editText} onChange={setText} />
+                  <form className="edit-form">
+                    <input
+                      type="text"
+                      value={editedTitles}
+                      onChange={(e) => setEditedTitles(e.target.value)}
+                    />
                     <div className="edit-btn">
-                      <button type="submit" onClick={edTask}>
+                      <button type="submit" onClick={handleSaveEdit}>
                         Сохранить
                       </button>
                       <button type="button" onClick={cancelEdit}>
