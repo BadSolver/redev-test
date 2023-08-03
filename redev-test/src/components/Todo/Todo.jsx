@@ -2,7 +2,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import "./style.css";
-import { TodoList, InputField } from "components";
+import { TodoList, InputField, Loader } from "components";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteAllTasks, searchTodo } from "../../store/todoSlice";
 
@@ -10,6 +10,7 @@ export const Todo = () => {
   const dispatch = useDispatch();
   const searchResults = useSelector((state) => state.todo.searchTodo);
   const toDo = useSelector((state) => state.todo.todo);
+  const status = useSelector((state) => state.todo.status);
 
   const {
     register,
@@ -26,6 +27,7 @@ export const Todo = () => {
       <h1>Todo</h1>
       <InputField />
       {errors.text ? <p className="error-msg"> Ошибка </p> : <></>}
+      {status === "loading" && <Loader />}
       {toDo.length > 2 && (
         <>
           <form onSubmit={handleSubmit(onSubmit2)} className="todo-form">

@@ -81,6 +81,33 @@ export const deleteOneTaskFromServer = createAsyncThunk(
   }
 );
 
+export const editOneTodo = createAsyncThunk(
+  "todo/editOneTodo",
+  async function ({ id, title }, { rejectWithValue }) {
+    const token = localStorage.getItem("token");
+    const url = process.env.REACT_APP_URL_FOR_EDIT_ONE_TASKS + id;
+    const options = {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ title: title }),
+    };
+
+    try {
+      const response = await fetch(url, options);
+      if (!response.ok) {
+        throw new Error("123");
+      }
+      const dataResponse = await response.json();
+      return dataResponse;
+    } catch (error) {
+      console.log(rejectWithValue(error.message));
+    }
+  }
+);
+
 const todoSlice = createSlice({
   name: "todo",
   initialState: {
@@ -120,10 +147,17 @@ const todoSlice = createSlice({
       .addCase(getAllTodoFromServer.rejected, (state, { payload }) => {
         state.status = "fail";
         state.error = payload;
+      })
+      .addCase(editOneTodo.fulfilled, (state, { payload }) => {
+        const { id, title } = payload;
+        const taskIndex = state.todo.findIndex((todo) => todo.id === id);
+        if (taskIndex !== -1) {
+          state.todo[taskIndex].title = title;
+        }
       });
   },
 });
 
 export default todoSlice.reducer;
-export const { addTodo, deleteAllTasks, deleteOneTodo, searchTodo } =
+export const { addTodo, deleteAllTasks, deleteOneTodo, searchTodo, editTodo } =
   todoSlice.actions;

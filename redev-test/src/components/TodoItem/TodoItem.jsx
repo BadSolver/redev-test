@@ -1,11 +1,10 @@
 // @ts-nocheck
 import React from "react";
-
 import "./style.css";
 import { deleteOneTaskFromServer } from "../../store/todoSlice";
 import { useDispatch } from "react-redux";
 
-export const TodoItem = ({ todo }) => {
+export const TodoItem = ({ todo, editTask }) => {
   const dispatch = useDispatch();
 
   return (
@@ -14,7 +13,7 @@ export const TodoItem = ({ todo }) => {
         type="button"
         className="todo-edit-btn"
         onClick={() => {
-          // editTask(todo.id);
+          editTask(todo.id);
         }}
       ></button>
       <span className="todo-text">{todo.title}</span>

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { logInUser } from "store/userSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { Loader } from "components";
 
 export const Login = () => {
   const dispatch = useDispatch();
@@ -27,7 +28,7 @@ export const Login = () => {
   return (
     <>
       <form className="wrapper" onSubmit={handleSubmit(onSubmit)}>
-        {status === "loading" && <h1>Идет загрузка данных</h1>}
+        {status === "loading" && <Loader />}
         {!status && (
           <>
             <h3>Введите данные для входа</h3>

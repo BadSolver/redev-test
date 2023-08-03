@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import "../Login/login.css";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "store/userSlice";
+import { Loader } from "components";
 
 export const Register = () => {
   const dispatch = useDispatch();
@@ -29,7 +30,7 @@ export const Register = () => {
     <form className="wrapper" onSubmit={handleSubmit(onSubmit)}>
       <h3>Регистрация пользователя</h3>
 
-      {status === "loading" && <h1>Идет загрузка </h1>}
+      {status === "loading" && <Loader />}
       {!status && (
         <>
           <label>
