@@ -154,6 +154,10 @@ const todoSlice = createSlice({
         if (taskIndex !== -1) {
           state.todo[taskIndex].title = title;
         }
+        const taskIndex1 = state.searchTodo.findIndex((todo) => todo.id === id);
+        if (taskIndex !== -1) {
+          state.searchTodo[taskIndex1].title = title;
+        }
       });
   },
 });
