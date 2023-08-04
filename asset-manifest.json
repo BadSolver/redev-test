@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/redev-todo/static/css/main.f66137d6.css",
-    "main.js": "/redev-todo/static/js/main.660ecaff.js",
+    "main.js": "/redev-todo/static/js/main.217716e2.js",
     "index.html": "/redev-todo/index.html",
     "main.f66137d6.css.map": "/redev-todo/static/css/main.f66137d6.css.map",
-    "main.660ecaff.js.map": "/redev-todo/static/js/main.660ecaff.js.map"
+    "main.217716e2.js.map": "/redev-todo/static/js/main.217716e2.js.map"
   },
   "entrypoints": [
     "static/css/main.f66137d6.css",
-    "static/js/main.660ecaff.js"
+    "static/js/main.217716e2.js"
   ]
 }
