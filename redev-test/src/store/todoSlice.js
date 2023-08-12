@@ -123,6 +123,7 @@ const todoSlice = createSlice({
     },
     deleteAllTasks(state) {
       state.todo = [];
+      state.searchTodo = [];
     },
     deleteOneTodo(state, { payload }) {
       state.todo = state.todo.filter((todo) => todo.id !== payload);
@@ -151,12 +152,14 @@ const todoSlice = createSlice({
       .addCase(editOneTodo.fulfilled, (state, { payload }) => {
         const { id, title } = payload;
         const taskIndex = state.todo.findIndex((todo) => todo.id === id);
-        if (taskIndex !== -1) {
+        if (taskIndex !== -1 && title !== undefined) {
           state.todo[taskIndex].title = title;
         }
-        const taskIndex1 = state.searchTodo.findIndex((todo) => todo.id === id);
-        if (taskIndex !== -1) {
-          state.searchTodo[taskIndex1].title = title;
+        const taskIndexSearch = state.searchTodo.findIndex(
+          (todo) => todo.id === id
+        );
+        if (taskIndexSearch !== -1 && title !== undefined) {
+          state.searchTodo[taskIndexSearch].title = title;
         }
       });
   },
@@ -165,3 +168,4 @@ const todoSlice = createSlice({
 export default todoSlice.reducer;
 export const { addTodo, deleteAllTasks, deleteOneTodo, searchTodo, editTodo } =
   todoSlice.actions;
+
