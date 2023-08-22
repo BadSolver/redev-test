@@ -133,21 +133,14 @@ export const Register = () => {
               type="checkbox"
               className="input-checkbox"
               checked={checked}
-              onChange={() => {
-                isChecked(!checked);
-              }}
+              onChange={() => isChecked(!checked)}
             />
           </label>
           <div className="button-block">
             <button type="submit" disabled={!checked}>
               Регистрация
             </button>
-            <button
-              type="submit"
-              onClick={() => {
-                navigate("/");
-              }}
-            >
+            <button type="submit" onClick={() => navigate("/")}>
               Авторизация
             </button>
           </div>

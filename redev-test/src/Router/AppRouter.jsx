@@ -6,7 +6,7 @@ import { PrivateRoute } from "./PrivateRoute";
 export const AppRouter = () => {
   return (
     <Routes>
-      <Route index element={<Login />} />
+      <Route index element={<Login />} path="/login" />
       <Route path="/register" element={<Register />} />
       <Route
         path="/todo"
