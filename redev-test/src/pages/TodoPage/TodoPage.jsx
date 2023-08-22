@@ -6,7 +6,7 @@ import { TodoList, InputField, Loader } from "components";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteAllTasks, searchTodo } from "../../store/todoSlice";
 
-export const Todo = () => {
+export const TodoPage = () => {
   const dispatch = useDispatch();
   const {
     searchTodo: search,

@@ -7,7 +7,7 @@ import { logInUser } from "store/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Loader } from "components";
 
-export const Login = () => {
+export const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const status = useSelector((state) => state.user.status);
