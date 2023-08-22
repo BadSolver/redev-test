@@ -80,12 +80,7 @@ export const Login = () => {
               <button type="submit" disabled={!isValid}>
                 Войти
               </button>
-              <button
-                type="button"
-                onClick={() => {
-                  navigate("/register");
-                }}
-              >
+              <button type="button" onClick={() => navigate("/register")}>
                 Регистрация
               </button>
             </div>

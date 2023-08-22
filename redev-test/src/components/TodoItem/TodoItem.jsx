@@ -12,17 +12,13 @@ export const TodoItem = ({ todo, editTask }) => {
       <button
         type="button"
         className="todo-edit-btn"
-        onClick={() => {
-          editTask(todo.id);
-        }}
+        onClick={() => editTask(todo.id)}
       ></button>
       <span className="todo-text">{todo.title}</span>
       <button
         type="button"
         className="todo-delete-btn"
-        onClick={() => {
-          dispatch(deleteOneTaskFromServer(todo.id));
-        }}
+        onClick={() => dispatch(deleteOneTaskFromServer(todo.id))}
       ></button>
     </li>
   );

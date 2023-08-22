@@ -8,9 +8,13 @@ import { deleteAllTasks, searchTodo } from "../../store/todoSlice";
 
 export const Todo = () => {
   const dispatch = useDispatch();
-  const searchResults = useSelector((state) => state.todo.searchTodo);
-  const toDo = useSelector((state) => state.todo.todo);
-  const status = useSelector((state) => state.todo.status);
+  const {
+    searchTodo: search,
+    todo,
+    status,
+  } = useSelector((state) => state.todo);
+
+  console.log(search, todo, status);
 
   const {
     register,
@@ -28,25 +32,23 @@ export const Todo = () => {
       <InputField />
       {errors.text ? <p className="error-msg"> Ошибка </p> : <></>}
       {status === "loading" && <Loader />}
-      {toDo.length > 2 && (
-        <>
-          <form onSubmit={handleSubmit(onSubmit2)} className="todo-form">
-            <label>
-              <h2>Поиск</h2>
-              <input
-                type="text"
-                {...register("search")}
-                className="todo-input"
-                placeholder="Введите название задачи, которую ищете"
-                onChange={(e) => dispatch(searchTodo(e.target.value))}
-              />
-            </label>
-            <input type="submit" className="todo-add-btn" value="Найти" />
-          </form>
-        </>
+      {todo.length > 2 && (
+        <form onSubmit={handleSubmit(onSubmit2)} className="todo-form">
+          <label>
+            <h2>Поиск</h2>
+            <input
+              type="text"
+              {...register("search")}
+              className="todo-input"
+              placeholder="Введите название задачи, которую ищете"
+              onChange={(e) => dispatch(searchTodo(e.target.value))}
+            />
+          </label>
+          <input type="submit" className="todo-add-btn" value="Найти" />
+        </form>
       )}
-      <TodoList allTasks={searchResults.length > 0 ? searchResults : toDo} />
-      {toDo.length >= 2 && (
+      <TodoList allTasks={search.length > 0 ? search : todo} />
+      {todo.length >= 2 && (
         <button
           className="btn-delete-all"
           onClick={() => dispatch(deleteAllTasks())}
