@@ -3,12 +3,12 @@ import React, { useState } from "react";
 import "./style.css";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import "../Login/login.css";
+import "../LoginPage/login.css";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "store/userSlice";
 import { Loader } from "components";
 
-export const Register = () => {
+export const RegisterPage = () => {
   const dispatch = useDispatch();
   const status = useSelector((state) => state.user.status);
   const [checked, isChecked] = useState(false);

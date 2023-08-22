@@ -1,18 +1,18 @@
-import { Login, Register, Todo } from "components";
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { PrivateRoute } from "./PrivateRoute";
+import { LoginPage, RegisterPage, TodoPage } from "pages";
 
 export const AppRouter = () => {
   return (
     <Routes>
-      <Route index element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      <Route index element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
       <Route
         path="/todo"
         element={
           <PrivateRoute>
-            <Todo />
+            <TodoPage />
           </PrivateRoute>
         }
       />
